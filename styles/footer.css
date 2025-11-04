@@ -1,0 +1,23 @@
+footer {
+  background-color: #84A98C;
+  color: #FAF6F0;
+  text-align: center;
+  padding: 1rem 0;
+  width: 100%;
+  margin-top: auto;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+footer p {
+  margin: 0;
+}
+
+footer a {
+  color: #E59866;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: #CAD2C5;
+}
