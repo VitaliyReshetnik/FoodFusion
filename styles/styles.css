@@ -23,7 +23,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('../assets/images/banner-bg.jpg'); /* Фото */
+  background-image: url('../assets/images/banner-bg.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -33,7 +33,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45); /* легке затемнення */
+  background: rgba(0, 0, 0, 0.45);
   z-index: 1;
 }
 
@@ -62,7 +62,7 @@ body {
 }
 
 /* ===== СЕКЦІЯ ПРО САЙТ ===== */
-.about {
+.about, .explore {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -73,66 +73,46 @@ body {
   opacity: 0;
   transform: translateY(50px);
   animation: fadeUp 1s ease forwards;
+}
+
+.about {
   animation-delay: 0.5s;
 }
 
-.about-image img {
+.explore {
+  animation-delay: 0.8s;
+}
+
+.about-image, .explore-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.about-image img, .explore-image img {
   width: 100%;
   max-width: 480px;
+  height: 320px;
+  object-fit: cover;
   border-radius: 16px;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
 
-.about-text h2 {
-  font-size: 2rem;
-  color: #E07A5F;
-  margin-bottom: 1rem;
-  animation: fadeSlide 1.2s ease-in-out;
-}
-
-.about-text p {
-  font-size: 1.05rem;
-  line-height: 1.8;
-  color: #3A3A3A;
-  animation: fadeSlide 1.4s ease-in-out;
-}
-
-/* ===== ДОДАТКОВА СЕКЦІЯ ===== */
-.explore {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1200px;
-  margin: 5rem auto;
-  gap: 3rem;
-  padding: 0 2rem;
-  opacity: 0;
-  transform: translateY(50px);
-  animation: fadeUp 1s ease forwards;
-  animation-delay: 0.7s;
-}
-
-.explore-text {
+/* ===== ТЕКСТ ===== */
+.about-text, .explore-text {
   flex: 1;
 }
 
-.explore-text h2 {
+.about-text h2, .explore-text h2 {
   font-size: 2rem;
   color: #E07A5F;
   margin-bottom: 1rem;
 }
 
-.explore-text p {
+.about-text p, .explore-text p {
   font-size: 1.05rem;
   line-height: 1.8;
   color: #3A3A3A;
-}
-
-.explore-image img {
-  width: 100%;
-  max-width: 480px;
-  border-radius: 16px;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
 
 /* ===== АНІМАЦІЇ ===== */
@@ -146,8 +126,23 @@ body {
   100% { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fadeSlide {
-  0% { opacity: 0; transform: translateX(-30px); }
-  100% { opacity: 1; transform: translateX(0); }
-}
+/* ===== АДАПТИВ ===== */
+@media (max-width: 900px) {
+  .about, .explore {
+    flex-direction: column;
+    text-align: center;
+  }
 
+  .about-image img, .explore-image img {
+    max-width: 90%;
+    height: auto;
+  }
+
+  .banner-text h1 {
+    font-size: 2rem;
+  }
+
+  .banner-text p {
+    font-size: 1rem;
+  }
+}
