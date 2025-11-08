@@ -85,6 +85,75 @@ nav a:hover::after {
   box-shadow: 0 0 6px rgba(224, 122, 95, 0.4);
 }
 
+/* ===== Профільне меню ===== */
+.profile-menu {
+  position: relative;
+}
+
+.profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  color: #2F3E46;
+  font-size: 1rem;
+  transition: 0.25s ease;
+}
+
+.profile-btn img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 0 5px rgba(0,0,0,0.15);
+}
+
+.profile-btn:hover {
+  color: #E07A5F;
+}
+
+/* Випадаюче меню */
+.dropdown {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  display: none;
+  flex-direction: column;
+  min-width: 190px;
+  overflow: hidden;
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.dropdown.active {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown li a {
+  display: block;
+  padding: 10px 15px;
+  color: #2F3E46;
+  text-decoration: none;
+  transition: background 0.25s;
+  font-size: 0.95rem;
+}
+
+.dropdown li a:hover {
+  background: #fff1e4;
+  color: #E07A5F;
+}
+
 /* ===== Адаптив ===== */
 @media (max-width: 900px) {
   .nav-container {

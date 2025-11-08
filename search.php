@@ -108,12 +108,14 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
     exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
   <title>Пошук рецептів | FoodFusion</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <link rel="stylesheet" href="styles/nav.css">
   <link rel="stylesheet" href="styles/styles.css">
   <link rel="stylesheet" href="styles/footer.css">
@@ -121,31 +123,50 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
 </head>
 <body>
 
+<!-- ===== Навігація ===== -->
 <header>
   <div class="nav-container">
+    <!-- Лого -->
     <div class="logo">
       <a href="index.php">
         <img src="assets/images/FoodFusion.png" alt="FoodFusion Logo">
       </a>
     </div>
+
+    <!-- Меню -->
     <nav>
       <ul>
-        <li><a href="search.php" class="active">Пошук рецептів</a></li>
-        <li><a href="#">Калькулятор калорій</a></li>
-        <li><a href="#">Список покупок</a></li>
+        <li><a href="search.php">Пошук рецептів</a></li>
+        <li><a href="calculator.php">Калькулятор калорій</a></li>
+        <li><a href="shopping_list.php">Список покупок</a></li>
 
         <?php if (isset($_SESSION['user_id'])): ?>
-          <li><a href="profile.php">Профіль</a></li>
-          <li><a href="logout.php" class="logout-btn">Вийти</a></li>
+          <!-- Профіль -->
+          <li class="profile-menu">
+            <button type="button" class="profile-btn">
+              <img src="assets/images/avatar.png" alt="Profile" />
+              <span><?= htmlspecialchars($_SESSION['user_name']) ?: 'Профіль' ?></span>
+            </button>
+
+            <ul class="dropdown">
+              <li><a href="profile.php">Мій профіль</a></li>
+              <li><a href="favorites.php">Вподобані</a></li>
+              <li><a href="collections.php">Колекції рецептів</a></li>
+              <li><a href="history.php">Історія</a></li>
+              <li><a href="logout.php">Вийти</a></li>
+            </ul>
+          </li>
         <?php else: ?>
-          <li><a href="login.php">Увійти</a></li>
-          <li><a href="register.php">Реєстрація</a></li>
+          <!-- Якщо користувач не увійшов -->
+          <li><a href="login.php" class="login-btn">Увійти</a></li>
+          <li><a href="register.php" class="register-btn">Реєстрація</a></li>
         <?php endif; ?>
       </ul>
     </nav>
   </div>
 </header>
 
+<!-- ===== Основний контент ===== -->
 <main>
   <section class="search-bar">
     <form id="searchForm">
@@ -237,12 +258,15 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
   <section id="recipes" class="recipes-container"></section>
 </main>
 
+<!-- ===== Футер ===== -->
 <footer>
   <div class="footer-container">
     <p>© 2025 FoodFusion. Усі права захищено.</p>
   </div>
 </footer>
 
+<!-- ===== JS ===== -->
+<script src="scripts/profile-menu.js"></script>
 <script src="scripts/search.js"></script>
 </body>
 </html>

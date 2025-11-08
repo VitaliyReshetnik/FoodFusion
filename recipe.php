@@ -51,31 +51,50 @@ if ($id) {
 </head>
 <body>
 
+<!-- ===== Навігація ===== -->
 <header>
   <div class="nav-container">
+    <!-- Лого -->
     <div class="logo">
       <a href="index.php">
         <img src="assets/images/FoodFusion.png" alt="FoodFusion Logo">
       </a>
     </div>
+
+    <!-- Меню -->
     <nav>
       <ul>
         <li><a href="search.php">Пошук рецептів</a></li>
-        <li><a href="#">Калькулятор калорій</a></li>
-        <li><a href="#">Список покупок</a></li>
+        <li><a href="calculator.php">Калькулятор калорій</a></li>
+        <li><a href="shopping_list.php">Список покупок</a></li>
 
         <?php if (isset($_SESSION['user_id'])): ?>
-          <li><a href="profile.php">Профіль</a></li>
-          <li><a href="logout.php" class="logout-btn">Вийти</a></li>
+          <!-- Профіль -->
+          <li class="profile-menu">
+            <button type="button" class="profile-btn">
+              <img src="assets/images/avatar.png" alt="Profile" />
+              <span><?= htmlspecialchars($_SESSION['user_name']) ?: 'Профіль' ?></span>
+            </button>
+
+            <ul class="dropdown">
+              <li><a href="profile.php">Мій профіль</a></li>
+              <li><a href="favorites.php">Вподобані</a></li>
+              <li><a href="collections.php">Колекції рецептів</a></li>
+              <li><a href="history.php">Історія</a></li>
+              <li><a href="logout.php">Вийти</a></li>
+            </ul>
+          </li>
         <?php else: ?>
-          <li><a href="login.php">Увійти</a></li>
-          <li><a href="register.php">Реєстрація</a></li>
+          <!-- Якщо користувач не увійшов -->
+          <li><a href="login.php" class="login-btn">Увійти</a></li>
+          <li><a href="register.php" class="register-btn">Реєстрація</a></li>
         <?php endif; ?>
       </ul>
     </nav>
   </div>
 </header>
 
+<!-- ===== Контент рецепта ===== -->
 <main class="recipe-container">
   <?php if ($recipe): ?>
   <article class="recipe-card">
@@ -113,7 +132,7 @@ if ($id) {
       </div>
     </div>
 
-    <!-- ===== Блок інгредієнтів ===== -->
+    <!-- ===== Інгредієнти ===== -->
     <section class="ingredients-block">
       <h2>🧂 Інгредієнти</h2>
       <?php if (!empty($ingredients)): ?>
@@ -127,13 +146,13 @@ if ($id) {
       <?php endif; ?>
     </section>
 
-    <!-- ===== Основний рецепт ===== -->
+    <!-- ===== Приготування ===== -->
     <div class="recipe-body">
       <h2>🍳 Приготування</h2>
       <p><?= nl2br(htmlspecialchars($recipe['instructions'] ?? 'Опис приготування буде додано пізніше.')) ?></p>
     </div>
 
-    <!-- Заглушки -->
+    <!-- ===== Заглушки ===== -->
     <div class="placeholder">
       <h3>❤️ Вподобання</h3>
       <p>Ця функція буде доступна пізніше — ви зможете зберігати свої улюблені рецепти.</p>
@@ -148,16 +167,19 @@ if ($id) {
   <?php else: ?>
   <div class="not-found">
     <h2>Рецепт не знайдено 😕</h2>
-    <a href="index.html" class="back-link">Повернутись на головну</a>
+    <a href="index.php" class="back-link">Повернутись на головну</a>
   </div>
   <?php endif; ?>
 </main>
 
+<!-- ===== Футер ===== -->
 <footer>
   <div class="footer-container">
     <p>&copy; <?= date("Y") ?> FoodFusion. Усі права захищено.</p>
   </div>
 </footer>
 
+<!-- ===== JS ===== -->
+<script src="scripts/profile-menu.js"></script>
 </body>
 </html>
