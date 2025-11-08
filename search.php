@@ -1,11 +1,5 @@
 <?php
-// ===== Підключення до БД =====
-try {
-    $pdo = new PDO("mysql:host=localhost;dbname=foodfusion;charset=utf8mb4", "root", "");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Помилка підключення: " . $e->getMessage());
-}
+require_once __DIR__ . '/config/db_connect.php';
 
 // ===== Отримуємо категорії =====
 $categories = $pdo->query("SELECT id, name, slug FROM categories ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
@@ -130,14 +124,23 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
 <header>
   <div class="nav-container">
     <div class="logo">
-      <a href="index.html"><img src="assets/images/FoodFusion.png" alt="FoodFusion"></a>
+      <a href="index.php">
+        <img src="assets/images/FoodFusion.png" alt="FoodFusion Logo">
+      </a>
     </div>
     <nav>
       <ul>
         <li><a href="search.php" class="active">Пошук рецептів</a></li>
-        <li><a href="calculator.html">Калькулятор калорій</a></li>
-        <li><a href="shopping-list.html">Список покупок</a></li>
-        <li><a href="profile.html">Профіль</a></li>
+        <li><a href="#">Калькулятор калорій</a></li>
+        <li><a href="#">Список покупок</a></li>
+
+        <?php if (isset($_SESSION['user_id'])): ?>
+          <li><a href="profile.php">Профіль</a></li>
+          <li><a href="logout.php" class="logout-btn">Вийти</a></li>
+        <?php else: ?>
+          <li><a href="login.php">Увійти</a></li>
+          <li><a href="register.php">Реєстрація</a></li>
+        <?php endif; ?>
       </ul>
     </nav>
   </div>

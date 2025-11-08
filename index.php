@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/config/db_connect.php';
+?>
+
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -21,7 +25,16 @@
           <li><a href="search.php">Пошук рецептів</a></li>
           <li><a href="#">Калькулятор калорій</a></li>
           <li><a href="#">Список покупок</a></li>
-          <li><a href="#">Профіль</a></li>
+
+          <?php if (isset($_SESSION['user_id'])): ?>
+            <!-- Якщо користувач увійшов -->
+            <li><a href="profile.php">Профіль</a></li>
+            <li><a href="logout.php" class="logout-btn">Вийти</a></li>
+          <?php else: ?>
+            <!-- Якщо не авторизований -->
+            <li><a href="login.php">Увійти</a></li>
+            <li><a href="register.php">Реєстрація</a></li>
+          <?php endif; ?>
         </ul>
       </nav>
     </div>
@@ -30,8 +43,13 @@
   <!-- ===== Вітальний блок ===== -->
   <section class="banner">
     <div class="banner-text">
-      <h1>Welcome to FoodFusion</h1>
-      <p>Discover, cook and enjoy your favorite recipes every day 🍽️</p>
+      <?php if (isset($_SESSION['user_name'])): ?>
+        <h1>Вітаємо, <?= htmlspecialchars($_SESSION['user_name']) ?> 👋</h1>
+        <p>Раді бачити тебе знову у FoodFusion!</p>
+      <?php else: ?>
+        <h1>Welcome to FoodFusion</h1>
+        <p>Discover, cook and enjoy your favorite recipes every day 🍽️</p>
+      <?php endif; ?>
     </div>
   </section>
 
