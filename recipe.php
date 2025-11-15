@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . "/config/db_connect.php";
 
 $id = $_GET['id'] ?? null;
@@ -12,6 +13,20 @@ if ($id) {
     $recipe = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($recipe) {
+
+        // ===== Додаємо в історію (авторизованим користувачам) =====
+        if (isset($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+
+            // Створюємо запис або оновлюємо viewed_at
+            $histStmt = $pdo->prepare("
+                INSERT INTO history (user_id, recipe_id)
+                VALUES (?, ?)
+                ON DUPLICATE KEY UPDATE viewed_at = CURRENT_TIMESTAMP
+            ");
+            $histStmt->execute([$user_id, $id]);
+        }
+
         // ===== Отримуємо категорії =====
         $catStmt = $pdo->prepare("
             SELECT c.name 
@@ -34,6 +49,15 @@ if ($id) {
         $ingStmt->execute([$id]);
         $ingredients = $ingStmt->fetchAll(PDO::FETCH_ASSOC);
     }
+}
+
+// ===== Перевіряємо: чи рецепт у вподобаних =====
+$is_favorite = false;
+
+if (isset($_SESSION['user_id']) && $recipe) {
+    $checkFav = $pdo->prepare("SELECT id FROM favorites WHERE user_id = ? AND recipe_id = ?");
+    $checkFav->execute([$_SESSION['user_id'], $recipe['id']]);
+    $is_favorite = $checkFav->rowCount() > 0;
 }
 ?>
 
@@ -85,7 +109,6 @@ if ($id) {
             </ul>
           </li>
         <?php else: ?>
-          <!-- Якщо користувач не увійшов -->
           <li><a href="login.php" class="login-btn">Увійти</a></li>
           <li><a href="register.php" class="register-btn">Реєстрація</a></li>
         <?php endif; ?>
@@ -118,6 +141,7 @@ if ($id) {
           <?php endif; ?>
 
           <p class="time">⏱️ <?= htmlspecialchars($recipe['cook_time'] ?? '?') ?> хв</p>
+
           <?php if (!empty($recipe['calories'])): ?>
             <p class="calories">🔥 <?= htmlspecialchars($recipe['calories']) ?> ккал</p>
           <?php endif; ?>
@@ -126,7 +150,16 @@ if ($id) {
         <p class="description"><?= nl2br(htmlspecialchars($recipe['description'] ?? '')) ?></p>
 
         <div class="recipe-actions">
-          <button class="favorite-btn">❤️ Додати у вподобані</button>
+
+          <!-- 🔥 КНОПКА ВПОДОБАНОГО -->
+          <?php if (isset($_SESSION['user_id'])): ?>
+              <a href="favorite_toggle.php?recipe_id=<?= $recipe['id'] ?>" class="favorite-btn">
+                  <?= $is_favorite ? "❤️ У вподобаних" : "🤍 Додати у вподобані" ?>
+              </a>
+          <?php else: ?>
+              <a href="login.php" class="favorite-btn">🤍 Додати у вподобані</a>
+          <?php endif; ?>
+
           <button class="shopping-btn">🛒 Додати у список покупок</button>
         </div>
       </div>
@@ -146,16 +179,9 @@ if ($id) {
       <?php endif; ?>
     </section>
 
-    <!-- ===== Приготування ===== -->
     <div class="recipe-body">
       <h2>🍳 Приготування</h2>
       <p><?= nl2br(htmlspecialchars($recipe['instructions'] ?? 'Опис приготування буде додано пізніше.')) ?></p>
-    </div>
-
-    <!-- ===== Заглушки ===== -->
-    <div class="placeholder">
-      <h3>❤️ Вподобання</h3>
-      <p>Ця функція буде доступна пізніше — ви зможете зберігати свої улюблені рецепти.</p>
     </div>
 
     <div class="placeholder comments">
@@ -172,14 +198,12 @@ if ($id) {
   <?php endif; ?>
 </main>
 
-<!-- ===== Футер ===== -->
 <footer>
   <div class="footer-container">
     <p>&copy; <?= date("Y") ?> FoodFusion. Усі права захищено.</p>
   </div>
 </footer>
 
-<!-- ===== JS ===== -->
 <script src="scripts/profile-menu.js"></script>
 </body>
 </html>

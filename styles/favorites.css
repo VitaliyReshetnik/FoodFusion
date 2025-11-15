@@ -1,0 +1,18 @@
+.favorites-header {
+  max-width: 1200px;
+  margin: 80px auto 10px;
+  padding: 0 40px;
+}
+
+.favorites-title {
+  font-size: 2.3rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.no-favorites {
+  font-size: 1.1rem;
+  color: #777;
+}
+    

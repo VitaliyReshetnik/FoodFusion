@@ -102,7 +102,24 @@ body {
   gap: 12px;
   flex-wrap: wrap;
 }
+.recipe-actions a.favorite-btn {
+  display: inline-block;
+  background: #ff7043;
+  color: #fff;
+  text-decoration: none;
+  padding: 11px 22px;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(255, 112, 67, 0.25);
+}
 
+.recipe-actions a.favorite-btn:hover {
+  background: #ff5722;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 15px rgba(255, 112, 67, 0.4);
+}
 .recipe-actions button {
   background: #ff7043;
   color: #fff;
